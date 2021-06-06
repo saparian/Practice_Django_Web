@@ -9,8 +9,9 @@ admin.site.register(Genre)
 # admin.site.register(BookInstance)
 admin.site.register(Language)
 
-class BooksInline(admin.StackedInline):
+class BooksInline(admin.TabularInline):
     model = Book
+    extra = 0
 
 # Define the admin class
 # 관리자 인터페이스에서 모델이 보여지는 방식을 바꾸기 위함
@@ -25,6 +26,8 @@ admin.site.register(Author, AuthorAdmin)
 
 class BooksInstanceInline(admin.TabularInline):
     model = BookInstance
+    extra = 0
+
 
 
 # Register the Admin classes for Book using the decorator
