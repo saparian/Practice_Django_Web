@@ -1,0 +1,70 @@
+""" 참조자료!!!! """
+# catalog/models.py 관련
+
+class MyModelName(models.Model):
+    """A typical class defining a model, derived from the Model class."""
+
+    # Fields
+    # 데이터베이스 table에 저장하길 원하는 열(column)을 나타냄
+    my_field_name = models.CharField(max_lengtt=20, help_text='Enter field documnent')
+    ...
+
+    # Metadata
+    # class meta 로 모델에 대한 모델수준의 메타데이타를 선언할 수 있음
+    # ex) ordering, verbose_name, abstract
+    class Meta:
+        ordering = ['-my_field_name'] # 알파벳 역순으로 필드가 정렬됨
+
+    # Methods
+    def get_absolute_url(self):
+        """Returns the rul to access a particular instance of MyModelName."""
+        return reverse('model-detail-view', args=[str(self.id)])
+        # 특정 레코드를 위해서 url mapper를 반전시킴, 이 경우 url mapping, view, template을 작성해야함
+
+
+    def __str__(self):
+        """String for representing the MyModelName object (in Admin site etc.)."""
+        return self.field_name  # 필드 네임을 반환
+
+
+# Create a new record using the model's constructor.
+# model's constructor를 사용해서 레코드 생성하기
+record = MymodelName(my_field_name="Instance #1")
+
+# Save the object into the database.
+# 데이타베이스에 저장하기
+record.save()
+
+# Access model field values using Python attributes.
+# python attributes를 사용해서 모델 필드값에 Access
+print(record.id) # should return 1 for the first record.
+print(record.my_field_name) # should print "Instance #1"
+
+# Change record by modifying the fields, then calling save().
+# 필드값을 수정하고 save한다
+record.my_field_name = "New Instance Name"
+record.save()
+
+# 레코드 검색하기!
+all_books = Book.objects.all() #object.all() : 모델의 모든 레코드를 QuerySet으로 가져올 수 있음
+
+'''
+filter()란 method를 사용하기!
+"wild"를 제목안에 포함하는 책을 필터링하고, 세어보기
+wild_books = Book.objects.filter(title__contains="wild")
+number_wild_books = Book.objects.filter(title__contains='wild').count()
+
+일치방법
+field_name__match_type
+icontains(대소문자 구분 X)
+iexact (대소문자 구분 X, 정확히 일치)
+exact (대소문자 구분 O, 정확히 일치)
+in, gt, startswith 등등..
+'''
+
+'''
+다른 모델에 정의하는 필드를 필터링해야할 때 (일대다 or 다대다)
+# Will match on : Fiction, Science fiction, non-fiction etc.
+books_containing_genre = book.objects.filter(genre__name__icontains='fiction')
+
+'''

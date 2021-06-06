@@ -1,0 +1,13 @@
+manage.py가 있는 디렉토리에서
+
+#서버 실행하기 (http://127.0.0.1:8080)
+py manage.py runserver 8080
+
+#마이그레이션하기
+#중요한 변경이 있을 경우에는 migration을 재실행하고 사이트를 다시 테스트해봐야함!!
+py manage.py makemigrations
+py manage.py migrate
+
+
+#Superuser 계정 생성하기
+py manage.py createsuperuser
